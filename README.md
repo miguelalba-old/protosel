@@ -1,0 +1,4 @@
+protosel
+========
+
+Instance selection algorithms
