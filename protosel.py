@@ -1,3 +1,4 @@
+import numpy as np
 from sklearn import neighbors
 
 
@@ -13,4 +14,29 @@ def enn(data, target):
     clf = neighbors.KNeighborsClassifier(3)
     clf.fit(data, target)
     sel = clf.predict(data) == target
+    return sel
+
+
+def renn(data, target):
+    """Repeated ENN.
+
+    Args:
+        data: Data values array.
+        target: Target values array.
+
+    Returns: Boolean mask of selected instances.
+    """
+
+    # Select all the instances
+    sel = np.ones(len(data), bool)
+    clf = neighbors.KNeighborsClassifier(3)
+
+    stop = False
+    while not stop:
+        clf.fit(data[sel], target[sel])
+        sel = clf.predict(data[sel]) == target[sel]
+        # If all the selected instances are classified correctly then stops
+        if np.count_nonzero(-sel) == 0:
+            stop = True
+
     return sel
