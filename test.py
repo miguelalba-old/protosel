@@ -58,6 +58,13 @@ class TestISA(unittest.TestCase):
                             True, True, True, True, True, True, False]
         self.assertEqual(obtained_results, expected_results)
 
+    def test_renn(self):
+        print protosel.renn(self.data, self.target)
+        obtained_results = protosel.renn(self.data, self.target).tolist()
+        expected_results = [True, False, True, True, True, True, True, True, True,
+                            True, False, True, True, False, True, True, True, True,
+                            True, True, True, True, False]
+        self.assertEqual(obtained_results, expected_results)
 
 if __name__ == '__main__':
     unittest.main()

@@ -28,15 +28,20 @@ def renn(data, target):
     """
 
     # Select all the instances
-    sel = np.ones(len(data), bool)
+    sel = np.arange(len(data))
     clf = neighbors.KNeighborsClassifier(3)
 
     stop = False
     while not stop:
         clf.fit(data[sel], target[sel])
-        sel = clf.predict(data[sel]) == target[sel]
+        result = clf.predict(data[sel]) == target[sel]
         # If all the selected instances are classified correctly then stops
-        if np.count_nonzero(-sel) == 0:
+        if np.count_nonzero(-result) == 0:
             stop = True
+        else:
+            sel = result.nonzero()[0]
 
-    return sel
+    mask = np.zeros(len(data), bool)
+    mask[sel] = True
+
+    return mask
