@@ -26,22 +26,19 @@ def renn(data, target):
 
     Returns: Boolean mask of selected instances.
     """
-
     # Select all the instances
-    sel = np.arange(len(data))
+    sel = np.ones(len(data), bool)
     clf = neighbors.KNeighborsClassifier(3)
 
     stop = False
     while not stop:
         clf.fit(data[sel], target[sel])
-        result = clf.predict(data[sel]) == target[sel]
-        # If all the selected instances are classified correctly then stops
-        if np.count_nonzero(-result) == 0:
+        # Indices of misclassified instances
+        misclassified = (clf.predict(data[sel]) != target[sel]).nonzero()[0]
+        # Unselect misclassified instances
+        sel[misclassified] = False
+        # If there is no misclassified instances, then stops
+        if len(misclassified) == 0:
             stop = True
-        else:
-            sel = result.nonzero()[0]
 
-    mask = np.zeros(len(data), bool)
-    mask[sel] = True
-
-    return mask
+    return sel
