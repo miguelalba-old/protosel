@@ -42,3 +42,32 @@ def renn(data, target):
             stop = True
 
     return sel
+
+
+def allknn(data, target):
+    """All KNN.
+
+    Args:
+        data: Data values array.
+        target: Target values array.
+
+    Returns: Boolean mask of selected instances.
+    """
+    sel = []  # Boolean masks of selected instances
+
+    # k takes values [1, .., K] where K = 3
+    for k in xrange(1, 4):
+        clf = neighbors.KNeighborsClassifier(k)
+        clf.fit(data, target)
+        sel.append(clf.predict(data) == target)
+
+    # Substitue True and False values with ones and zeros
+    sel = [np.where(mask, 1, 0) for mask in sel]
+
+    # Sum masks. Those instances selected less than K times were removed for a
+    # given k value -> Thus they are marked for removal (True)
+    total = np.array(sel)
+    total = np.sum(sel, axis=0)
+
+    sel = total == 3
+    return sel
