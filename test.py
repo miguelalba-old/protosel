@@ -72,6 +72,14 @@ class TestISA(unittest.TestCase):
                             True, True, True, True, True, True, False]
         self.assertEqual(obtained_results, expected_results)
 
+    def test_rnn(self):
+        obtained_results = protosel.rnn(self.data, self.target).tolist()
+        expected_results = [False, True, True, False, False, False, False,
+                            False, False, True, True, False, False, True, True,
+                            False, False, False, True, False, False, False,
+                            True]
+        self.assertEqual(obtained_results, expected_results)
+
 
 if __name__ == '__main__':
     unittest.main()

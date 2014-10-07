@@ -71,3 +71,24 @@ def allknn(data, target):
 
     sel = total == 3
     return sel
+
+
+def rnn(data, target):
+    """Reduced Nearest Neighbor.
+
+    Args:
+        data: Data values array.
+        target: Target values array.
+
+    Returns: Boolean mask of selected instances.
+    """
+    sel = np.ones(len(data), bool)
+    clf = neighbors.KNeighborsClassifier(1)
+
+    for p in xrange(len(data)):
+        sel[p] = False
+        clf.fit(data[sel], target[sel])
+        if (clf.predict(data) != target).any():
+            sel[p] = True
+
+    return sel
